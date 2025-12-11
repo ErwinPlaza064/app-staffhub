@@ -48,6 +48,12 @@ Route::post('/casilleros/{id}/liberar', [CasilleroController::class, 'liberar'])
 Route::get('/api/casilleros', [CasilleroController::class, 'getData'])->name('casilleros.data');
 Route::get('/casilleros/export-pdf', [CasilleroController::class, 'exportPdf'])->name('casilleros.export.pdf');
 
+// Casillero Fotos 360° Routes
+Route::get('/api/casilleros/fotos', [App\Http\Controllers\CasilleroFotoController::class, 'index'])->name('casilleros.fotos.index');
+Route::post('/api/casilleros/fotos', [App\Http\Controllers\CasilleroFotoController::class, 'upload'])->name('casilleros.fotos.upload');
+Route::delete('/api/casilleros/fotos/{id}', [App\Http\Controllers\CasilleroFotoController::class, 'destroy'])->name('casilleros.fotos.destroy');
+Route::post('/api/casilleros/fotos/{id}/toggle', [App\Http\Controllers\CasilleroFotoController::class, 'toggleActive'])->name('casilleros.fotos.toggle');
+
 // Configuración Routes
 Route::get('/configuracion', [ConfiguracionController::class, 'index'])->name('configuracion.index');
 Route::post('/configuracion/areas', [ConfiguracionController::class, 'storeArea'])->name('configuracion.areas.store');

@@ -8,6 +8,7 @@ export default function LockersGrid({
     contadores,
     onAsignar,
     onLiberar,
+    onOpenVirtualTour,
 }) {
     return (
         <div className="grid gap-6 lg:grid-cols-2">
@@ -29,6 +30,15 @@ export default function LockersGrid({
                                 </p>
                             </div>
                         </div>
+                        <button
+                            onClick={() => onOpenVirtualTour && onOpenVirtualTour('Hombres')}
+                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-all bg-blue-500 hover:bg-blue-600 rounded-lg shadow-md hover:shadow-lg"
+                        >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Vista 360°
+                        </button>
                     </div>
                 </div>
                 <div className="p-4 grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto">
@@ -67,6 +77,15 @@ export default function LockersGrid({
                                 </p>
                             </div>
                         </div>
+                        <button
+                            onClick={() => onOpenVirtualTour && onOpenVirtualTour('Mujeres')}
+                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-all bg-pink-500 hover:bg-pink-600 rounded-lg shadow-md hover:shadow-lg"
+                        >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Vista 360°
+                        </button>
                     </div>
                 </div>
                 <div className="p-4 grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto">

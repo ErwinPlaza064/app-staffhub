@@ -7,6 +7,7 @@ import LockersGrid from "@/Components/Casilleros/LockersGrid";
 import AsignarModal from "@/Components/Casilleros/AsignarModal";
 import CrearCasilleroModal from "@/Components/Casilleros/CrearCasilleroModal";
 import LiberarModal from "@/Components/Casilleros/LiberarModal";
+import VirtualTourModal from "@/Components/Casilleros/VirtualTourModal";
 
 export default function CasillerosIndex({
     casillerosHombres,
@@ -18,6 +19,8 @@ export default function CasillerosIndex({
     const [showAsignarModal, setShowAsignarModal] = useState(false);
     const [showCrearModal, setShowCrearModal] = useState(false);
     const [showLiberarModal, setShowLiberarModal] = useState(false);
+    const [showVirtualTour, setShowVirtualTour] = useState(false);
+    const [virtualTourArea, setVirtualTourArea] = useState(null);
     const [selectedCasillero, setSelectedCasillero] = useState(null);
     const [casilleroToLiberar, setCasilleroToLiberar] = useState(null);
 
@@ -132,6 +135,10 @@ export default function CasillerosIndex({
                 contadores={contadores}
                 onAsignar={openAsignarModal}
                 onLiberar={openLiberarModal}
+                onOpenVirtualTour={(area) => {
+                    setVirtualTourArea(area);
+                    setShowVirtualTour(true);
+                }}
             />
 
             {/* Add Locker Button */}
@@ -181,6 +188,16 @@ export default function CasillerosIndex({
                 onClose={closeLiberarModal}
                 casillero={casilleroToLiberar}
                 onConfirm={handleLiberar}
+            />
+
+            {/* Virtual Tour 360° Modal */}
+            <VirtualTourModal
+                show={showVirtualTour}
+                onClose={() => {
+                    setShowVirtualTour(false);
+                    setVirtualTourArea(null);
+                }}
+                area={virtualTourArea}
             />
         </AppLayout>
     );
