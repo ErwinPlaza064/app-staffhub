@@ -36,23 +36,12 @@ export default function AppLayout({ children }) {
                 <div className="min-h-screen bg-gray-50 dark:bg-dark-950 text-gray-900 dark:text-gray-100">
                     {/* Header */}
                     <header className="sticky top-0 z-50 bg-white dark:bg-dark-900 border-b border-gray-200 dark:border-dark-700 shadow-sm">
-                        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+                        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-5">
                             <div className="flex justify-between items-center h-14 sm:h-16">
-                                {/* Logo */}
-                                <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                                        <svg className="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656-.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                        </svg>
-                                    </div>
-                                    <div className="min-w-0">
-                                        <h1 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white truncate">StaffHub</h1>
-                                        <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 hidden sm:block">Administración y seguimiento de empleados y registro de lockers</p>
-                                    </div>
-                                </div>
+                                <h1>StaffHub</h1>
 
                                 {/* Navigation - Desktop */}
-                                <nav className="hidden md:flex items-center gap-1 mx-4">
+                                <nav className="hidden md:flex items-center gap-1">
                                     <Link
                                         href="/empleados"
                                         className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
@@ -104,7 +93,7 @@ export default function AppLayout({ children }) {
                             </div>
                             
                             {/* Navigation - Mobile */}
-                            <div className="md:hidden flex justify-center gap-2 pb-3 py-4 overflow-x-auto">
+                            <div className="md:hidden flex justify-center gap-2 pb-3 py-0 overflow-x-auto">
                                 <Link
                                     href="/empleados"
                                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
