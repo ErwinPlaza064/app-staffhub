@@ -54,6 +54,7 @@ class Empleado extends Model
         'area',
         'puesto',
         'grupo',
+        'genero',
         'fecha_baja',
         'motivo_baja',
     ];

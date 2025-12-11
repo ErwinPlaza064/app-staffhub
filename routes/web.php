@@ -31,6 +31,9 @@ Route::get('/api/empleados', [EmpleadoController::class, 'getData'])->name('empl
 Route::get('/empleados/export', [EmpleadoController::class, 'export'])->name('empleados.export');
 Route::post('/empleados/import', [EmpleadoController::class, 'import'])->name('empleados.import');
 Route::get('/empleados/template', [EmpleadoController::class, 'downloadTemplate'])->name('empleados.template');
+Route::get('/empleados/{id}/casilleros-disponibles', [EmpleadoController::class, 'casillerosDisponibles'])->name('empleados.casilleros-disponibles');
+Route::post('/empleados/{id}/asignar-casillero', [EmpleadoController::class, 'asignarCasillero'])->name('empleados.asignar-casillero');
+
 
 // Bajas Routes
 Route::get('/bajas', [EmpleadoController::class, 'bajasIndex'])->name('bajas.index');

@@ -6,6 +6,7 @@ import Icons from "@/Components/Icons";
 import StatCard from "@/Components/Empleados/StatCard";
 import EmpleadosTable from "@/Components/Empleados/EmpleadosTable";
 import EmpleadoFormModal from "@/Components/Empleados/EmpleadoFormModal";
+import AsignarCasilleroModal from "@/Components/Empleados/AsignarCasilleroModal";
 import ImportModal from "@/Components/Empleados/ImportModal";
 import BajaModal from "@/Components/Empleados/BajaModal";
 
@@ -22,6 +23,8 @@ export default function EmpleadosIndex({
     const [showImportModal, setShowImportModal] = useState(false);
     const [editingEmpleado, setEditingEmpleado] = useState(null);
     const [empleadoToBaja, setEmpleadoToBaja] = useState(null);
+    const [showAsignarCasilleroModal, setShowAsignarCasilleroModal] = useState(false);
+    const [empleadoRecienCreado, setEmpleadoRecienCreado] = useState(null);
     const [activeFilter, setActiveFilter] = useState(filtros?.area || "Todos");
     const [searchQuery, setSearchQuery] = useState(filtros?.search || "");
 
@@ -31,6 +34,7 @@ export default function EmpleadosIndex({
         area: areas[0]?.nombre || "Staff",
         puesto: "",
         grupo: grupos[0]?.nombre || "A",
+        genero: "Masculino",
     });
 
     const {
@@ -77,6 +81,7 @@ export default function EmpleadosIndex({
                 area: empleado.area,
                 puesto: empleado.puesto,
                 grupo: empleado.grupo,
+                genero: empleado.genero || "Masculino",
             });
         } else {
             setEditingEmpleado(null);
@@ -86,6 +91,7 @@ export default function EmpleadosIndex({
                 area: areas[0]?.nombre || "Staff",
                 puesto: "",
                 grupo: grupos[0]?.nombre || "A",
+                genero: "Masculino",
             });
         }
         setShowModal(true);
@@ -133,13 +139,23 @@ export default function EmpleadosIndex({
         } else {
             post(route("empleados.store"), {
                 preserveScroll: true,
-                onSuccess: () => {
+                onSuccess: (page) => {
                     closeModal();
                     showSuccess("Empleado registrado exitosamente");
-                    router.visit(route("empleados.index"), {
-                        preserveState: false,
-                        preserveScroll: true,
-                    });
+                    
+                    // Obtener el empleado creado desde la respuesta
+                    const empleadoCreado = page.props.flash?.empleado_creado;
+                    
+                    if (empleadoCreado) {
+                        setEmpleadoRecienCreado(empleadoCreado);
+                        setShowAsignarCasilleroModal(true);
+                    } else {
+                        // Si no hay empleado en la respuesta, recargar
+                        router.visit(route("empleados.index"), {
+                            preserveState: false,
+                            preserveScroll: true,
+                        });
+                    }
                 },
                 onError: (errors) => {
                     showError("Error al registrar el empleado");
@@ -311,6 +327,24 @@ export default function EmpleadosIndex({
                 setBajaData={setBajaData}
                 processing={processingBaja}
                 onSubmit={handleBaja}
+            />
+
+            {/* Asignar Casillero Modal */}
+            <AsignarCasilleroModal
+                show={showAsignarCasilleroModal}
+                onClose={() => {
+                    setShowAsignarCasilleroModal(false);
+                    setEmpleadoRecienCreado(null);
+                }}
+                empleado={empleadoRecienCreado}
+                onSuccess={() => {
+                    setShowAsignarCasilleroModal(false);
+                    setEmpleadoRecienCreado(null);
+                    router.visit(route("empleados.index"), {
+                        preserveState: false,
+                        preserveScroll: true,
+                    });
+                }}
             />
         </AppLayout>
     );

@@ -122,6 +122,7 @@ class EmpleadoController extends Controller
             'area' => 'required|in:Staff,Calidad,Producción,Almacén,Mantenimiento',
             'puesto' => 'required|string|min:3|max:100',
             'grupo' => 'required|in:A,B,C,MIXTO',
+            'genero' => 'required|in:Masculino,Femenino',
         ], [
             'numero_nomina.required' => 'El número de nómina es obligatorio',
             'numero_nomina.size' => 'El número de nómina debe tener exactamente 5 dígitos',
@@ -144,9 +145,16 @@ class EmpleadoController extends Controller
             'area' => $validated['area'],
             'puesto' => $validated['puesto'],
             'grupo' => $validated['grupo'],
+            'genero' => $validated['genero'],
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        // Obtener el empleado recién creado
+        $empleado = Empleado::where('numero_nomina', $validated['numero_nomina'])->first();
+
+        // Compartir el empleado creado con Inertia
+        session()->flash('empleado_creado', $empleado);
 
         return redirect()->back()->with('success', 'Empleado registrado exitosamente.');
     }
@@ -170,6 +178,7 @@ class EmpleadoController extends Controller
             'area' => 'required|in:Staff,Calidad,Producción,Almacén,Mantenimiento',
             'puesto' => 'required|string|min:3|max:100',
             'grupo' => 'required|in:A,B,C,MIXTO',
+            'genero' => 'required|in:Masculino,Femenino',
         ], [
             'numero_nomina.required' => 'El número de nómina es obligatorio',
             'numero_nomina.size' => 'El número de nómina debe tener exactamente 5 dígitos',
@@ -183,6 +192,8 @@ class EmpleadoController extends Controller
             'puesto.min' => 'El puesto debe tener al menos 3 caracteres',
             'grupo.required' => 'El grupo es obligatorio',
             'grupo.in' => 'El grupo seleccionado no es válido',
+            'genero.required' => 'El género es obligatorio',
+            'genero.in' => 'El género seleccionado no es válido',
         ]);
 
         $validated['updated_at'] = now();
@@ -387,5 +398,68 @@ class EmpleadoController extends Controller
 
         $writer->save('php://output');
         exit;
+    }
+
+    /**
+     * Obtener casilleros disponibles según el género del empleado
+     */
+    public function casillerosDisponibles($id)
+    {
+        $empleado = Empleado::findOrFail($id);
+
+        // Determinar el tipo de casillero según el género
+        $tipoCasillero = $empleado->genero === 'Masculino' ? 'Hombres' : 'Mujeres';
+
+        // Contar casilleros disponibles del tipo correcto
+        $disponibles = \App\Models\Casillero::disponibles()
+            ->where('tipo', $tipoCasillero)
+            ->count();
+
+        return response()->json([
+            'disponibles' => $disponibles,
+            'tipo' => $tipoCasillero,
+            'empleado' => $empleado
+        ]);
+    }
+
+    /**
+     * Asignar casillero automáticamente al empleado
+     */
+    public function asignarCasillero($id)
+    {
+        $empleado = Empleado::findOrFail($id);
+
+        // Verificar si ya tiene un casillero asignado
+        if ($empleado->casillero) {
+            return redirect()->back()->withErrors([
+                'casillero' => 'El empleado ya tiene un casillero asignado'
+            ]);
+        }
+
+        // Determinar el tipo de casillero según el género
+        $tipoCasillero = $empleado->genero === 'Masculino' ? 'Hombres' : 'Mujeres';
+
+        // Buscar primer casillero disponible del tipo correcto
+        $casillero = \App\Models\Casillero::disponibles()
+            ->where('tipo', $tipoCasillero)
+            ->first();
+
+        if (!$casillero) {
+            return redirect()->back()->withErrors([
+                'casillero' => 'No hay casilleros disponibles del tipo ' . $tipoCasillero
+            ]);
+        }
+
+        // Asignar el casillero
+        $casillero->update([
+            'emp_id' => $empleado->Id,
+            'estatus' => 'Ocupado',
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->back()->with(
+            'success',
+            "Casillero {$casillero->numero_casillero} asignado exitosamente a {$empleado->nombre}"
+        );
     }
 }

@@ -96,6 +96,23 @@ export default function EmpleadoFormModal({
                         </select>
                     </div>
 
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Género
+                        </label>
+                        <select
+                            value={data.genero || "Masculino"}
+                            onChange={(e) => setData("genero", e.target.value)}
+                            className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-dark-600 bg-white dark:bg-dark-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
+                        >
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                        </select>
+                        {errors.genero && (
+                            <p className="mt-1 text-sm text-red-600">{errors.genero}</p>
+                        )}
+                    </div>
+
                     <div className="flex justify-end gap-3 pt-4">
                         <button
                             type="button"
