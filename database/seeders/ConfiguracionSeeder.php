@@ -44,7 +44,6 @@ class ConfiguracionSeeder extends Seeder
         $grupos = [
             ['nombre' => 'A', 'descripcion' => 'Grupo A', 'orden' => 1],
             ['nombre' => 'B', 'descripcion' => 'Grupo B', 'orden' => 2],
-            ['nombre' => 'C', 'descripcion' => 'Grupo C', 'orden' => 3],
             ['nombre' => 'MIXTO', 'descripcion' => 'Grupo mixto', 'orden' => 4],
         ];
 
@@ -59,7 +58,7 @@ class ConfiguracionSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('   ✅ 4 grupos insertados');
+        $this->command->info('   ✅ 3 grupos insertados');
         $this->command->info('');
         $this->command->info('✅ Configuración inicial completada');
     }
